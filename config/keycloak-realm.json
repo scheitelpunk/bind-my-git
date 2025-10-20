@@ -1,0 +1,155 @@
+{
+  "id": "project-management",
+  "realm": "project-management",
+  "displayName": "Project Management System",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": true,
+  "registrationEmailAsUsername": true,
+  "rememberMe": true,
+  "verifyEmail": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "System administrator with full access"
+      },
+      {
+        "name": "project_manager",
+        "description": "Can manage projects and teams"
+      },
+      {
+        "name": "developer",
+        "description": "Can work on tasks and track time"
+      },
+      {
+        "name": "viewer",
+        "description": "Read-only access to assigned projects"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "pm-backend",
+      "name": "Project Management Backend",
+      "description": "FastAPI backend service",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "your-backend-secret",
+      "standardFlowEnabled": false,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "access.token.lifespan": "3600"
+      }
+    },
+    {
+      "clientId": "pm-frontend",
+      "name": "Project Management Frontend",
+      "description": "React frontend application",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "protocol": "openid-connect",
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://frontend:3000/*",
+        "http://frontend/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://frontend:3000",
+        "http://frontend/*"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ],
+  "requiredActions": [
+    {
+      "alias": "VERIFY_EMAIL",
+      "name": "Verify Email",
+      "providerId": "VERIFY_EMAIL",
+      "enabled": true,
+      "defaultAction": false
+    },
+    {
+      "alias": "UPDATE_PROFILE",
+      "name": "Update Profile",
+      "providerId": "UPDATE_PROFILE",
+      "enabled": true,
+      "defaultAction": false
+    },
+    {
+      "alias": "CONFIGURE_TOTP",
+      "name": "Configure OTP",
+      "providerId": "CONFIGURE_TOTP",
+      "enabled": true,
+      "defaultAction": false
+    },
+    {
+      "alias": "UPDATE_PASSWORD",
+      "name": "Update Password",
+      "providerId": "UPDATE_PASSWORD",
+      "enabled": true,
+      "defaultAction": false
+    }
+  ],
+  "loginTheme": "keycloak",
+  "accountTheme": "keycloak",
+  "adminTheme": "keycloak",
+  "emailTheme": "keycloak",
+  "internationalizationEnabled": true,
+  "supportedLocales": [
+    "en",
+    "de",
+    "es",
+    "fr"
+  ],
+  "defaultLocale": "en",
+  "smtpServer": {
+    "host": "localhost",
+    "port": "587",
+    "from": "noreply@project-management.local",
+    "fromDisplayName": "Project Management System",
+    "auth": false,
+    "ssl": false,
+    "starttls": true
+  },
+  "eventsEnabled": true,
+  "eventsListeners": [
+    "jboss-logging"
+  ],
+  "enabledEventTypes": [
+    "LOGIN",
+    "LOGIN_ERROR",
+    "LOGOUT",
+    "REGISTER",
+    "UPDATE_PROFILE",
+    "UPDATE_PASSWORD"
+  ],
+  "adminEventsEnabled": true,
+  "adminEventsDetailsEnabled": true,
+  "identityProviders": [],
+  "protocolMappers": [
+    {
+      "name": "role-mapper",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-usermodel-realm-role-mapper",
+      "config": {
+        "claim.name": "realm_access.roles",
+        "jsonType.label": "String",
+        "multivalued": "true"
+      }
+    }
+  ]
+}

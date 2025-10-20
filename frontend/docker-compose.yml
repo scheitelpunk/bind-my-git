@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_URL=http://localhost:8080/api
+      - VITE_KEYCLOAK_URL=http://localhost:8180
+      - VITE_KEYCLOAK_REALM=project-management
+      - VITE_KEYCLOAK_CLIENT_ID=project-management-frontend
+    depends_on:
+      - backend
+    networks:
+      - project-management-network
+
+  # Backend service (reference)
+  backend:
+    image: project-management-backend:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/project_management
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI=http://keycloak:8080/realms/project-management
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - project-management-network
+
+  # Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=project_management
+      - POSTGRES_USER=projectuser
+      - POSTGRES_PASSWORD=projectpass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - project-management-network
+
+  # Keycloak
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=keycloak
+    command: start-dev
+    ports:
+      - "8180:8080"
+    depends_on:
+      - postgres
+    networks:
+      - project-management-network
+
+volumes:
+  postgres_data:
+
+networks:
+  project-management-network:
+    driver: bridge
