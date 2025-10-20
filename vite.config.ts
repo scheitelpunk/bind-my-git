@@ -11,7 +11,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    port: 8080,
     host: true,
     allowedHosts: [
       'localhost',
@@ -20,7 +20,7 @@ export default defineConfig({
       '.camalacode.org',
     ],
     hmr: {
-      port: 3000,
+      port: 8080,
     },
     headers: {
       'X-Frame-Options': 'DENY',
