@@ -35,10 +35,10 @@ const Header: React.FC = () => {
   };
 
   return (
-    <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow md:pl-0">
+    <div className="relative z-10 flex-shrink-0 flex h-16 glass border-b border-dark-800/50 backdrop-blur-xl md:pl-0">
       <button
         type="button"
-        className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 md:hidden"
+        className="px-4 border-r border-dark-800/50 text-dark-400 hover:text-dark-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 md:hidden transition-colors"
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       >
         <span className="sr-only">{t('header.openSidebar')}</span>
@@ -47,19 +47,19 @@ const Header: React.FC = () => {
 
       <div className="flex-1 px-4 flex justify-between items-center">
         <div className="flex-1 flex">
-          <h1 className="text-2xl font-semibold text-gray-900">{getPageName()}</h1>
+          <h1 className="text-2xl font-semibold glow-text">{getPageName()}</h1>
         </div>
 
         <div className="ml-4 flex items-center md:ml-6 space-x-4">
           {/* Search */}
           <div className="relative hidden md:block">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-gray-400" aria-hidden="true" />
+              <Search className="h-5 w-5 text-dark-500" aria-hidden="true" />
             </div>
             <input
               type="search"
               placeholder={t('header.search')}
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+              className="block w-full pl-10 pr-3 py-2 bg-dark-900/50 border border-dark-700 rounded-lg leading-5 placeholder-dark-500 text-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent sm:text-sm transition-all duration-300 backdrop-blur-sm"
             />
           </div>
 
@@ -70,17 +70,17 @@ const Header: React.FC = () => {
           <NotificationDropdown />
 
           {/* Profile */}
-          <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center">
+          <div className="flex items-center group">
+            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:shadow-xl group-hover:shadow-primary-500/40 transition-all duration-300">
               <span className="text-sm font-medium text-white">
                 {user?.first_name?.[0]}{user?.last_name?.[0]}
               </span>
             </div>
             <div className="ml-3 hidden lg:block">
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-dark-100 group-hover:text-primary-400 transition-colors">
                 {user?.first_name} {user?.last_name}
               </p>
-              <p className="text-xs text-gray-500">{user?.email}</p>
+              <p className="text-xs text-dark-400">{user?.email}</p>
             </div>
           </div>
         </div>
