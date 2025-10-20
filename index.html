@@ -12,30 +12,7 @@
   </head>
   <body>
     <!-- Simple iframe blocking without errors -->
-    <script>
-      // Non-destructive iframe blocking
-      (function() {
-        'use strict';
-        const originalCreateElement = document.createElement;
-        const BLOCKED_TAGS = ['iframe', 'frame', 'frameset', 'object', 'embed'];
-
-        document.createElement = function(tagName) {
-          const tag = String(tagName).toLowerCase();
-          if (BLOCKED_TAGS.includes(tag)) {
-            console.warn('🚫 Blocked', tag, 'creation for security');
-
-            // Return invisible dummy div without throwing errors
-            const dummy = originalCreateElement.call(this, 'div');
-            dummy.style.cssText = 'display:none!important;visibility:hidden!important;position:absolute!important;left:-9999px!important;';
-            dummy.setAttribute('data-blocked', tag);
-            return dummy;
-          }
-          return originalCreateElement.call(this, tagName);
-        };
-
-        console.log('🛡️ Iframe protection initialized (non-destructive mode)');
-      })();
-    </script>
+  
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
