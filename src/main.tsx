@@ -5,7 +5,7 @@ import './index.css'
 import './i18n/config'
 
 // Standard iframe blocker (emergency killer disabled in dev)
-import './utils/iframe-blocker'
+// import './utils/iframe-blocker'
 
 // Disable emergency mode during development to prevent errors
 const EMERGENCY_MODE = import.meta.env.VITE_EMERGENCY_MODE === 'true' && import.meta.env.PROD;
